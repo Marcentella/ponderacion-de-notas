@@ -1,0 +1,422 @@
+/* Resetear estilos */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+    outline: none;
+}
+
+h1, h2, h3, p{
+    color: var(--color-text);
+}
+
+a{
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+input{
+    background-color: rgba(1, 1, 1, 0.0);
+    color: var(--color-text);
+    border-style: none none solid none;
+    border-color: var(--color-border);
+    text-align: center;
+    margin: 0;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button,
+input[type="dropdown"] {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+select {
+    -webkit-appearance: none; 
+    -moz-appearance: none;
+    appearance: none; 
+}
+
+input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+/* Colores */
+
+:root {
+    --color-primary: #1f2937;
+    --color-secondary: #2a2c57;
+    --color-background: #141c2b;
+    --color-surface: #333667;
+    --color-foreground: #1f2937;
+    --color-border: #39558d;
+    --color-button: #3867a8; 
+    --color-muted-button: color-mix(in oklab, var(--color-button), #1c1c1c 50%);
+    --color-muted: #333d4f;
+    --color-text: #fff;
+    --color-subtext: #d1d5db;
+    --color-link: #2563eb;
+    --color-success: #10b981;
+    --color-warning: #f5ce0b;
+    --color-error: #ef4444;
+    --color-muted-error: color-mix(in oklab, var(--color-error), #1c1c1c 50%);
+}
+
+/* Body */
+
+body {
+    background-color: var(--color-background);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 30px 0;
+}
+
+/*MARK:  Titulos */
+
+.aprobacion-container{
+    width: 90%;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    padding: 0px 10px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+input#aprobacion{
+    width: 30px;
+    margin-left: 10px;
+}
+
+#titulo{
+    margin-bottom: 10px;
+
+}
+
+.container-slogan p{
+    flex-direction: column;
+    color: var(--color-subtext);
+}
+
+.fila.heading {
+    display: flex;
+    justify-content: center;
+    font-size: clamp(0.8rem, 2vw, 1rem);;
+    align-items: center;
+    font-weight: bold;
+    color: var(--color-text);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+h3.heading.examen{
+    margin-bottom: 20px;
+    font-size: clamp(0.8rem, 2vw, 1rem);;
+}
+
+/* MARK: Botones */
+
+button{
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-button);
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 0 20px 0 20px;
+}
+
+.buttons button:first-child {
+    grid-column: 1 / span 2;
+}
+
+.buttons button {
+    width: 100%;
+    transition: 0.1s;
+}
+
+.buttons button:active{
+    transform: scale(0.90);
+    transition: 0.1s;
+}
+
+.buttons button:hover{
+    background-color: var(--color-muted-button);
+    color: var(--color-muted);
+    transition: 0.1s;
+    color: var(--color-text);
+}
+
+.suspense-button {
+  display: inline-block;
+  will-change: transform;
+}
+
+.suspense-button:hover {
+  animation: intenseShake 1.5s ease-in-out;
+}
+
+.fa-circle-xmark{
+    position: relative;;
+    color: var(--color-error);
+    display: block;
+    font-size: clamp(0.8rem, 2vw, 1rem);;
+}
+
+#settings-close{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: var(--color-text);
+    font-size: clamp(0.8rem, 2vw, 1rem);;
+}
+
+.fa-circle-xmark:hover{
+    color: var(--color-muted-error);
+}
+
+/*MARK:  Calculadora */
+
+.container{
+    display: flex;
+}
+
+.container-wrap{
+    border-radius: 16px;
+    padding: 50px 0;
+    width: 90%;
+    height: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+    background-color: var(--color-primary);
+}
+
+.fila {
+    display: flex;
+    justify-content: space-evenly;
+    gap: 20px;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.notas-grid:not(#examen-wrap .notas-grid) {
+    transform: translateX(18px);
+}
+
+.fila div,
+.fila input {
+    width: clamp(80px, 20vw, 150px);
+    text-align: center;
+    padding-bottom: 4px;
+}
+
+#examen-wrap{
+    display: none;
+    flex-direction: column;
+}
+
+#examen-wrap.active{
+    display: flex;
+}
+
+/* Toggle output */
+
+.output-container {
+    display: none;
+}
+
+.output-container.active {
+    display: block;
+}
+
+#output{
+    font-size: clamp(1.5rem, 2.5vw, 3rem);
+    color: var(--color-success);
+    font-weight: bold;
+    display: block;
+    margin: 10px;
+}
+
+#current_average{
+    font-size: clamp(1.2rem, 1.2vw, 2.5rem);
+    color: var(--color-text);
+    font-weight: bold;
+    display: block;
+    margin: 10px 0 20px 0;
+}
+
+/* MARK: Settings */
+
+.container-wrap.settings-wrap{
+    z-index: 1;
+    display: none;
+    justify-content: space-evenly;
+    border-radius: 16px;
+    position: absolute;
+    padding: 50px 0px;
+    font-size: clamp(0.7rem, -1.5rem + 2.3vw, 2rem);
+    width: clamp(280px, 80%, 600px);
+    height: fit-content;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    background-color: var(--color-surface);
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    pointer-events: none;
+}
+
+/* Show + animate */
+.container-wrap.settings-wrap.active {
+  display: flex; /* shown when active */
+}
+
+.container-wrap.settings-wrap.show {
+  opacity: 1;
+  transform: scale(1);
+  pointer-events: auto;
+}
+
+.container-wrap.settings-wrap.hide {
+  opacity: 0;
+  transform: scale(0.95);
+  pointer-events: none;
+}
+
+.overlay{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+    transform: scale(1.2);
+}
+
+.overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.settings {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    gap: 1.5rem;
+    width: clamp(280px, 80%, 600px);
+    padding: 0 15px;
+}
+
+.setting {
+  display: flex;
+  align-items: center;
+}
+
+.setting label {
+  flex: 1;
+  color: var(--color-text);
+  text-align: left;
+}
+
+.setting input,
+.setting select {
+  flex: 1;
+  width: clamp(40px, 2.3vw, 90px);
+  max-height: 40px;
+  padding: 6px;
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  outline: none;
+  border-radius: 6px;
+  text-align: center;
+}
+
+.overlay.active,
+.container-wrap.settings-wrap.active {
+    display: flex;
+}
+
+/* MARK:Footer */
+
+footer {
+    position: fixed;
+    margin-top: 40px;
+    margin-right: 30px;
+    font-size: clamp(0.8rem, 1.5vw, 1.2rem);
+    bottom: 0;
+    display: flex;
+    justify-content: end;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    color: var(--color-text);
+}
+
+footer #dev{
+    color: var(--color-success);
+}
+
+/*MARK: Animation */
+
+@keyframes intenseShake {
+  0%   { transform: translate(0); }
+  5%   { transform: translate(-1px, 1px); }
+  10%  { transform: translate(1px, -1px); }
+  15%  { transform: translate(-2px, 2px); }
+  20%  { transform: translate(2px, -2px); }
+  25%  { transform: translate(-3px, 3px); }
+  30%  { transform: translate(3px, -3px); }
+  35%  { transform: translate(-4px, 4px); }
+  40%  { transform: translate(4px, -4px); }
+  45%  { transform: translate(-5px, 5px); }
+  50%  { transform: translate(5px, -5px); } /* Peak shakiness */
+  55%  { transform: translate(-5px, 5px); }
+  60%  { transform: translate(4px, -4px); }
+  65%  { transform: translate(-3px, 3px); }
+  70%  { transform: translate(2px, -2px); }
+  75%  { transform: translate(-1px, 1px); }
+  80%  { transform: translate(1px, -1px); }
+  85%  { transform: translate(0.5px, -0.5px); }
+  90%  { transform: translate(-0.3px, 0.3px); }
+  95%  { transform: translate(0.2px, -0.2px); }
+  100% { transform: translate(0); }
+}
+
+
+
+/*MARK: Media queries*/
+
+@media screen and (min-width: 900px) {
+    
+    .aprobacion-container{        
+    width: 50%;
+    }
+
+    .container-wrap{
+        width: 50%
+    }
+    
+}

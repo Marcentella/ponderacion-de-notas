@@ -1,0 +1,140 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La mejor calculadora de notas</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="assets/100.ico" type="image/png">
+    <script src="https://kit.fontawesome.com/238f7a97da.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+
+    <h1 id="titulo">Pondera tus notas</h1>
+    
+    <div class="container-slogan" id="slogan">
+        <p>Usa cualquier formato, configura a tu medida</p>
+    </div>
+    
+
+    <div class="aprobacion-container">
+
+        <div class="container">
+            <h3>Nota aprobación: </h3>
+            <input type="number" id="aprobacion" value="4">
+        </div>
+        
+        <a href="#" id="settings-toggle">
+            <i class="fa-solid fa-gear"></i>
+        </a>
+
+    </div>
+    
+    <div class="container-wrap">
+    
+        <div class="output-container active">
+            <h3>Necesitas un</h3>
+            <span id="output">00</span>
+            <p>Al <span id="percentage-remainder">00%</span> restante. <br>Tienes un promedio asegurado de: </p> <span id="current_average">00</span>
+        </div>
+        <div class="fila heading">
+            <div>Nota</div>
+            <div>Porcentaje</div>
+        </div>
+        
+        <div class="notas-grid">
+            <div class="fila">
+                <input type="number" id="mark" placeholder="68 / 6.8 / 6,8" 
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
+                maxlength="4">
+                <input type="number"  id="percentage"
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
+                maxlength="2">
+                <a href="#">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                </a>
+            </div>
+        </div>
+ 
+        <div id="examen-wrap" class="active">
+            <h3 class="heading examen">Examen final</h3>
+            <div class="notas-grid">
+                <div class="fila">
+                    <input type="number" placeholder="68 / 6.8 / 6,8" 
+                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
+                    maxlength="4">
+                    <input type="number" 
+                    oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
+                    maxlength="2">
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container">
+
+        </div>
+
+            <div class="buttons"> 
+                <button class="suspense-button">Calcular</button>
+                <button>Agregar nota</button>
+                <button id="exam_toggle">Examen final</button>
+            </div>
+    </div>
+
+
+    <!-- Settings -->
+
+    <div class="container-wrap settings-wrap">
+        
+            <a href="#" id="settings-close">
+                <i class="fa-solid fa-circle-xmark"></i>
+            </a>
+
+        <div class="settings">
+            <div class="setting">
+                <label for="aprobacion">Nota de aprobación</label>
+                <input type="number" id="aprobacion" value="4">
+            </div>
+
+            <div class="setting">
+                <label for="nota-min">Nota mínima</label>
+                <input type="number" id="nota-min" value="1">
+            </div>
+
+            <div class="setting">
+                <label for="nota-max">Nota máxima</label>
+                <input type="number" id="nota-max" value="7">
+            </div>
+
+            <div class="setting">
+                <label for="decimales">Cantidad de decimales</label>
+                <select id="decimales">
+                    <option value="0">0</option>
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+
+            <div class="setting">
+            <label for="tema">Paleta de colores</label>
+            <select id="tema">
+                <option value="classic">Clásico</option>
+                <option value="dark">Oscuro</option>
+                <option value="soft">Suave</option>
+            </select>
+            </div>
+ 
+        </div>
+    </div>
+
+    <div class="overlay"></div>
+    
+    <footer>
+        <p>Hecho con amor, por <a href="https://github.com/Marcentella" id="dev">Marcentella</a></p>
+    </footer>
+
+
+    <script src="js/script.js" defer></script>
+</body>
+</html>
