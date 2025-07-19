@@ -98,11 +98,12 @@ input#aprobacion{
 
 #titulo{
     margin-bottom: 10px;
-
+    text-align: center;git
 }
 
 .container-slogan p{
     flex-direction: column;
+    text-align: center;
     color: var(--color-subtext);
 }
 
