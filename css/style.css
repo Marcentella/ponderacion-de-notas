@@ -58,7 +58,7 @@ input[type="number"] {
     --color-muted-button: color-mix(in oklab, var(--color-button), #1c1c1c 50%);
     --color-muted: #333d4f;
     --color-text: #fff;
-    --color-subtext: #d1d5db;
+    --color-subtext: color-mix(in oklab, var(--color-text), #606060 50%);
     --color-link: #2563eb;
     --color-success: #10b981;
     --color-warning: #f5ce0b;
@@ -78,10 +78,60 @@ body {
     padding: 30px 0;
 }
 
+.popup {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--color-error);
+    border: 1px solid var(--color-muted-error);
+    color: var(--color-text);
+    padding: 12px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+.popup.show {
+    opacity: 1;
+}
+
+#tooltip-window{
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    z-index: 1001;
+    width: clamp(100px, 60%, 600px);
+}
+
+#tooltip-window.active {
+    display: block;
+}
+
+#close-tooltip {
+    background-color: var(--color-button);
+    color: var(--color-text);
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 20px;
+    font-size: clamp(0.8rem, 1.5vw, 1rem);
+}
+
 /*MARK:  Titulos */
 
 .aprobacion-container{
-    width: 90%;
+    width: 50%;
     margin-top: 30px;
     margin-bottom: 20px;
     padding: 0px 10px;
@@ -91,14 +141,19 @@ body {
     justify-content: space-between;
 }
 
-input#aprobacion{
+.aprobacion-container input[type="checkbox"] {
+    margin-left: 4px;
+    cursor: pointer;
+}
+
+input#aprobacion-top{
     width: 30px;
     margin-left: 10px;
 }
 
 #titulo{
     margin-bottom: 10px;
-    text-align: center;git
+    text-align: center;
 }
 
 .container-slogan p{
@@ -179,12 +234,33 @@ button{
     font-size: clamp(0.8rem, 2vw, 1rem);;
 }
 
+.tooltip{
+    color: var(--color-muted);
+    cursor: pointer;
+    font-size: clamp(0.8rem, 1.5vw, 0.7rem);
+    margin-left: 20px;
+    margin-right: 5px;
+    transition: 0.3s;
+}
+
+.tooltip:hover {
+    font-size: clamp(0.8rem, 1.5vw, 0.7rem);
+    color: var(--color-link);
+    transition: 0.3s;
+}
+
 #settings-close{
     position: absolute;
     top: 10px;
     right: 10px;
     color: var(--color-text);
     font-size: clamp(0.8rem, 2vw, 1rem);;
+}
+
+#exam_toggle.active{
+    box-shadow: 0px 0px 10px 5px color-mix(in oklab, var(--color-button), #434343 50%);
+    color: var(--color-text);
+    transition: 0.2s;
 }
 
 .fa-circle-xmark:hover{
@@ -195,12 +271,13 @@ button{
 
 .container{
     display: flex;
+    align-items: center;
 }
 
 .container-wrap{
     border-radius: 16px;
     padding: 50px 0;
-    width: 90%;
+    width: 50%;
     height: fit-content;
     display: flex;
     flex-direction: column;
@@ -226,7 +303,6 @@ button{
 .fila input {
     width: clamp(80px, 20vw, 150px);
     text-align: center;
-    padding-bottom: 4px;
 }
 
 #examen-wrap{
@@ -250,7 +326,7 @@ button{
 
 #output{
     font-size: clamp(1.5rem, 2.5vw, 3rem);
-    color: var(--color-success);
+    color: var(--color-subtext);
     font-weight: bold;
     display: block;
     margin: 10px;
@@ -258,11 +334,16 @@ button{
 
 #current_average{
     font-size: clamp(1.2rem, 1.2vw, 2.5rem);
-    color: var(--color-text);
+    color: var(--color-subtext);
     font-weight: bold;
     display: block;
     margin: 10px 0 20px 0;
 }
+
+#output, #current_average {
+    transition: color 0.3s ease;
+}
+
 
 /* MARK: Settings */
 
@@ -313,7 +394,7 @@ button{
     opacity: 0;
     transition: opacity 0.3s ease;
     pointer-events: none;
-    transform: scale(1.2);
+    transform: scaleY(1.2) translateY(10px);
 }
 
 .overlay.active {
@@ -410,14 +491,27 @@ footer #dev{
 
 /*MARK: Media queries*/
 
-@media screen and (min-width: 900px) {
+@media screen and (max-width: 900px) {
     
+
     .aprobacion-container{        
-    width: 50%;
+        width: 90%;
+    }
+
+    .container{
+        font-size: 10px;
     }
 
     .container-wrap{
-        width: 50%
+        width: 90%
     }
     
+}
+
+@media screen and (max-width: 600px) {
+    .aprobacion-container{
+
+    }
+
+
 }

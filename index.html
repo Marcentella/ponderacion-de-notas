@@ -9,6 +9,7 @@
 </head>
 <body>
 
+    <div id="popup" class="popup hidden"></div>
 
     <h1 id="titulo">Pondera tus notas</h1>
     
@@ -21,7 +22,15 @@
 
         <div class="container">
             <h3>Nota aprobación: </h3>
-            <input type="number" id="aprobacion" value="4">
+            <input type="text" data-setting="aprobacion" id="aprobacion-top" value="4" class="mark-input aprobacion-input"
+            ninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
+            maxlength="4">
+
+            <i class="fa-solid fa-circle-question tooltip" id="tooltip-button"></i>
+                <h3>Escala porcentual: </h3> 
+            <a href="#">
+                <input type="checkbox">
+            </a>
         </div>
         
         <a href="#" id="settings-toggle">
@@ -30,54 +39,54 @@
 
     </div>
     
+    <!-- Tooltip -->
+
+    <div id="tooltip-window" class="">
+        <p>Esta opción te permite deshabilitar el punto decimal automático y asigna la cantidad de decimales a 0<br><br>
+        Ejemplo: Si escribes <strong>55</strong>, se tomará como <strong>55</strong> y no <strong>5.5</strong>.</p>
+        <button id="close-tooltip">Entendido</button>
+    </div>
+
     <div class="container-wrap">
     
-        <div class="output-container active">
-            <h3>Necesitas un</h3>
-            <span id="output">00</span>
-            <p>Al <span id="percentage-remainder">00%</span> restante. <br>Tienes un promedio asegurado de: </p> <span id="current_average">00</span>
-        </div>
+    <div class="output-container active">
+        <h3 id="required-label">Necesitas un</h3>
+        <span id="output">--</span>
+        <p>
+            Al <span id="percentage-remainder">--%</span> restante. <br>
+            Tienes un promedio asegurado de: <span id="current_average">--</span>
+        </p>
+    </div>
+
+
         <div class="fila heading">
             <div>Nota</div>
             <div>Porcentaje</div>
         </div>
         
-        <div class="notas-grid">
+        <div class="notas-grid" id="notasGrid">
             <div class="fila">
-                <input type="number" id="mark" placeholder="68 / 6.8 / 6,8" 
-                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
-                maxlength="4">
-                <input type="number"  id="percentage"
-                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
-                maxlength="2">
-                <a href="#">
-                    <i class="fa-solid fa-circle-xmark"></i>
-                </a>
+
             </div>
         </div>
  
-        <div id="examen-wrap" class="active">
+        <div id="examen-wrap" class="">
             <h3 class="heading examen">Examen final</h3>
             <div class="notas-grid">
                 <div class="fila">
-                    <input type="number" placeholder="68 / 6.8 / 6,8" 
+                    <input type="number" data-setting="exam-mark" placeholder="68 / 6.8 / 6,8" 
                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
                     maxlength="4">
-                    <input type="number" 
+                    <input type="number" data-setting="exam-percentage"
                     oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
                     maxlength="2">
                 </div>
             </div>
         </div>
 
-
-        <div class="container">
-
-        </div>
-
             <div class="buttons"> 
-                <button class="suspense-button">Calcular</button>
-                <button>Agregar nota</button>
+                <button class="suspense-button" id="calculate">Calcular</button>
+                <button onclick="addRow()">Agregar nota</button>
                 <button id="exam_toggle">Examen final</button>
             </div>
     </div>
@@ -94,22 +103,29 @@
         <div class="settings">
             <div class="setting">
                 <label for="aprobacion">Nota de aprobación</label>
-                <input type="number" id="aprobacion" value="4">
+                <input type="text" data-setting="aprobacion" id="aprobacion-settings" value="4" class="mark-input aprobacion-input"
+                ninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
+                maxlength="4">
             </div>
 
             <div class="setting">
                 <label for="nota-min">Nota mínima</label>
-                <input type="number" id="nota-min" value="1">
+                <input type="text" data-setting="nota-min" id="nota-min" value="1" class="number-input"
+                oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
+                maxlength="4">
+
             </div>
 
             <div class="setting">
                 <label for="nota-max">Nota máxima</label>
-                <input type="number" id="nota-max" value="7">
+                <input type="text" id="nota-max" data-setting="nota-max" value="7" class="number-input"
+                ninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" 
+                maxlength="4">
             </div>
 
             <div class="setting">
                 <label for="decimales">Cantidad de decimales</label>
-                <select id="decimales">
+                <select id="decimales" data-setting="decimals">
                     <option value="0">0</option>
                     <option value="1" selected>1</option>
                     <option value="2">2</option>
@@ -117,8 +133,8 @@
             </div>
 
             <div class="setting">
-            <label for="tema">Paleta de colores</label>
-            <select id="tema">
+            <label for="theme">Paleta de colores</label>
+            <select id="theme" data-setting="theme">
                 <option value="classic">Clásico</option>
                 <option value="dark">Oscuro</option>
                 <option value="soft">Suave</option>
@@ -129,7 +145,8 @@
     </div>
 
     <div class="overlay"></div>
-    
+
+
     <footer>
         <p>Hecho con amor, por <a href="https://github.com/Marcentella" id="dev">Marcentella</a></p>
     </footer>
