@@ -294,6 +294,18 @@ function getSettings() {
 
 // Calculate the required mark for the exam
 
+function normalizeMark(value) {
+    value = value.replace(',', '.');
+    const percentScaleToggle = document.getElementById('percent-scale-toggle');
+    // Only normalize if checkbox is NOT checked
+    if (percentScaleToggle && !percentScaleToggle.checked && !value.includes('.')) {
+        if (/^\d{2,}$/.test(value)) {
+            value = value[0] + '.' + value.slice(1);
+        }
+    }
+    return value;
+}
+
 function getMarks() {
     const rows = document.querySelectorAll('.fila');
     const isExamActive = document.getElementById('exam_toggle').classList.contains('active');
@@ -307,7 +319,8 @@ function getMarks() {
         // If this is the exam row but the toggle is not active, skip it
         if (isExamRow && !isExamActive) return;
 
-        const mark = parseFloat(row.querySelector('.mark-input')?.value.replace(',', '.') || 0);
+        const rawMark = row.querySelector('.mark-input')?.value || '';
+        const mark = parseFloat(normalizeMark(rawMark)) || 0;
         const percentage = parseFloat(row.querySelector('.number-input')?.value || 0);
 
         if (!isNaN(mark) && !isNaN(percentage)) {
@@ -371,4 +384,28 @@ document.getElementById("calculate").addEventListener("click", updateOutput);
 
 document.querySelectorAll(".mark-input, .number-input").forEach(input => {
     input.addEventListener("input", updateOutput);
+});
+
+// Force decimals to 0 when checkbox is checked
+
+const percentScaleToggle = document.getElementById('percent-scale-toggle');
+const decimalsSelect = document.getElementById('decimales');
+
+percentScaleToggle.addEventListener('change', () => {
+    if (percentScaleToggle.checked) {
+        decimalsSelect.value = "0";
+        localStorage.setItem('decimals', "0");
+    } else {
+        decimalsSelect.value = "1";
+        localStorage.setItem('decimals', "1");
+    }
+    updateOutput();
+});
+
+decimalsSelect.addEventListener('change', () => {
+    if (percentScaleToggle.checked) {
+        decimalsSelect.value = "0";
+        localStorage.setItem('decimals', "0");
+    }
+    updateOutput();
 });

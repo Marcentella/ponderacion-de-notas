@@ -303,6 +303,8 @@ button{
 .fila input {
     width: clamp(80px, 20vw, 150px);
     text-align: center;
+    font-size: 1rem;
+    padding-bottom: 5px;
 }
 
 #examen-wrap{
@@ -506,12 +508,4 @@ footer #dev{
         width: 90%
     }
     
-}
-
-@media screen and (max-width: 600px) {
-    .aprobacion-container{
-
-    }
-
-
 }
