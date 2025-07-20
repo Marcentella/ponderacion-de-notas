@@ -21,12 +21,13 @@ Esta es una calculadora de notas pensada para estudiantes universitarios chileno
 - ✅ Ventana de configuración.
 - ✅ Estilo personalizable.
 - ✅ Validación visual si la nota requerida es imposible.
+- ✅ Escala 1 al 100.
 
 ---
 
 ## 📦 Cómo usarla
 
-1. Ve a (insertaré el link cuando exista)
+1. Ve a [este link](https://marcentella.github.io/ponderacion-de-notas/)
 2. Ingresa tus notas en las casillas.
 4. (Opcional) Haz clic en el engranaje ⚙️ para ajustar configuraciones avanzadas.
 3. Presiona **Calcular**.
@@ -34,9 +35,9 @@ Esta es una calculadora de notas pensada para estudiantes universitarios chileno
 
 ---
 
-## ✨ Capturas (Preview)
+## ✨ Preview
 
-(WIP)
+![Screenshot](assets/screenshot.png)
 
 ---
 
@@ -74,22 +75,17 @@ This is a grade calculator designed for Chilean university students who:
 - ✅ Settings window.
 - ✅ Customizable style.
 - ✅ Visual validation if the required grade is impossible.
+- ✅ Scale from 1 to 100.
 
 ---
 
 ## 📦 How to use it
 
-1. Go to (I'll insert the link once it's live)
+1. Go to [this link.](https://marcentella.github.io/ponderacion-de-notas/)
 2. Enter your grades in the fields.
 3. (Optional) Click the ⚙️ gear icon to adjust advanced settings.
 4. Press **Calculate**.
 5. Check your results.
-
----
-
-## ✨ Previews (WIP)
-
-(Coming soon)
 
 ---
 
