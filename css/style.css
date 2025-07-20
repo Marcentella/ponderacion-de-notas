@@ -443,6 +443,19 @@ button{
     display: flex;
 }
 
+/* Palette and select inputs*/
+
+select {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+}
+
+select option {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border: 0px solid var(--color-border);
+}
+
 /* MARK:Footer */
 
 footer {

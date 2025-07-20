@@ -173,6 +173,8 @@ overlay.addEventListener('click', () => {
   settingsWrap.classList.remove('active');
 });
 
+// Digit input validation and max grade enforcement
+
 // MARK: Adding mark rows dynamically.
 
 let filaCount = 0;
@@ -187,11 +189,11 @@ function addRow(initial = false, nota = '', porcentaje = '') {
     const notaInput = document.createElement("input");
     notaInput.type = "text";
     notaInput.classList.add("mark-input");
-    notaInput.placeholder = "68 / 6.8 / 6,8";
+    notaInput.placeholder = "70 / 7,0 / 7.0";
     notaInput.maxLength = 4;
     notaInput.value = nota;
     notaInput.oninput = function () {
-        this.value = this.value.replace(/[^0-9.,]/g, '').slice(0, this.maxLength);
+        enforceMaxGrade(this);
         saveMarksToLocalStorage();
     };
 
@@ -337,31 +339,106 @@ function updateOutput() {
     const percentageRem = document.getElementById('percentage-remainder');
     const avgElem = document.getElementById('current_average');
     const output = document.getElementById('output');
+    const requiredLabel = document.getElementById('required-label');
     const { aprobacion, notaMax, notaMin, decimals } = getSettings();
     const { totalWeight, weightedSum } = getMarks();
+    const outputText = document.getElementById('output-text');
 
-    if (totalWeight > 100) {
-        showPopup("El porcentaje total supera el 100%");
-        output.style.color = "var(--color-error)";
-        output.textContent = "Sobre 100%"
-        document.getElementById('required-label').style.display = "none";
+    const examToggle = document.getElementById('exam_toggle');
+    const isExamActive = examToggle.classList.contains('active');
+    const examRow = document.querySelector('#examen-wrap .fila');
+    const examMarkInput = examRow ? examRow.querySelector('[data-setting="exam-mark"]') : null;
+    const examPercInput = examRow ? examRow.querySelector('[data-setting="exam-percentage"]') : null;
+    const examMark = examMarkInput ? normalizeMark(examMarkInput.value) : '';
+    const examPerc = examPercInput ? examPercInput.value : '';
+
+    // Exam mode logic
+    if (isExamActive) {
+        // Only grades (not exam) must sum to 100%
+        const gradesPercent = totalWeight;
+
+        if (gradesPercent !== 100) {
+            output.style.color = "var(--color-error)";
+            output.style.marginBottom = "30px";
+            output.textContent = "Notas deben sumar 100%";
+            showPopup("La suma de los porcentajes de las notas debe ser exactamente 100%");
+            requiredLabel.style.display = "none";
+            outputText.style.display = "none";
+            return;
+        }
+
+        // Case 1: Grade empty, percentage filled
+        if (!examMark && examPerc) {
+            requiredLabel.style.display = "";
+            percentageRem.textContent = `${examPerc}%`;
+            avgElem.textContent = "--";
+            // Calculate required mark for exam
+            const remainingWeight = parseFloat(examPerc);
+            const required = (aprobacion - weightedSum) / (remainingWeight / 100);
+            const roundedRequired = Math.max(notaMin, Math.min(required, 9999)).toFixed(decimals);
+            output.textContent = roundedRequired;
+            output.style.color = required > notaMax ? "var(--color-error)" : "var(--color-success)";
+            return;
+        }
+
+        // Case 2: Grade filled, percentage empty
+        if (examMark && !examPerc) {
+            showPopup("porcentaje de examen no puede estar vacío");
+            output.style.color = "var(--color-error)";
+            output.textContent = "--";
+            requiredLabel.style.display = "none";
+            percentageRem.textContent = "--%";
+            avgElem.textContent = "--";
+            return;
+        }
+
+        // Case 3: Both grade and percentage filled
+        if (examMark && examPerc) {
+            requiredLabel.textContent = "Tu promedio final es:";
+            requiredLabel.style.display = "";
+            outputText.style.display = "none";
+            // Calculate final average
+            const examMarkNum = parseFloat(examMark) || 0;
+            const examPercNum = parseFloat(examPerc) || 0;
+            const finalWeightedSum = weightedSum + examMarkNum * (examPercNum / 100);
+            const finalAverage = finalWeightedSum / ((gradesPercent + examPercNum) / 100);
+            const roundedAvg = finalAverage.toFixed(decimals);
+            output.textContent = roundedAvg;
+            avgElem.textContent = roundedAvg;
+            output.style.color = finalAverage < aprobacion ? "var(--color-error)" : "var(--color-success)";
+            avgElem.style.color = output.style.color;
+            return;
+        }
+
+        // Default: nothing filled
+        output.textContent = "--";
+        requiredLabel.style.display = "none";
         percentageRem.textContent = "--%";
         avgElem.textContent = "--";
         return;
-    } else {
-        document.getElementById('required-label').style.display = "";
+    }
+
+    // Default behavior (exam not active)
+    requiredLabel.style.display = "";
+    if (totalWeight > 100) {
+        showPopup("El porcentaje total supera el 100%");
+        output.style.color = "var(--color-error)";
+        output.textContent = "Sobre 100%";
+        requiredLabel.style.display = "none";
+        percentageRem.textContent = "--%";
+        avgElem.textContent = "--";
+        return;
     }
 
     const remainingWeight = 100 - totalWeight;
     const required = (aprobacion - weightedSum) / (remainingWeight / 100);
     const average = totalWeight > 0 ? (weightedSum / (totalWeight / 100)) : 0;
 
-    // Trigger popups for invalid required grades
-    if (required > notaMax) {
+    if (isFinite(required) && required > notaMax) {
         showPopup(`La nota requerida (${required.toFixed(decimals)}) supera la nota máxima (${notaMax}) ☠️`);
         output.style.color = "var(--color-error)";
     } else {
-        output.style.color = "var(--color-success)";
+        output.style.color = "var(--color-success";
     }
 
     if (required < notaMin) {
@@ -371,10 +448,25 @@ function updateOutput() {
     const roundedRequired = Math.max(notaMin, Math.min(required, 9999)).toFixed(decimals);
     const roundedAvg = average.toFixed(decimals);
 
+    if (!isExamActive && totalWeight === 100) {
+        requiredLabel.textContent = "Tu promedio final es:";
+        requiredLabel.style.display = "";
+        outputText.style.display = "none";
+        percentageRem.textContent = "--%";
+        output.textContent = roundedAvg;
+        avgElem.textContent = roundedAvg;
+        output.style.color = average < aprobacion ? "var(--color-error)" : "var(--color-success)";
+        avgElem.style.color = output.style.color;
+        return;
+    } else {
+        requiredLabel.textContent = "Necesitas un";
+        requiredLabel.style.display = "";
+        outputText.style.display = "";
+    }
+
     output.textContent = roundedRequired;
     percentageRem.textContent = `${remainingWeight}%`;
     avgElem.textContent = roundedAvg;
-
     avgElem.style.color = average < aprobacion ? "var(--color-error)" : "var(--color-success)";
 }
 
@@ -395,9 +487,24 @@ percentScaleToggle.addEventListener('change', () => {
     if (percentScaleToggle.checked) {
         decimalsSelect.value = "0";
         localStorage.setItem('decimals', "0");
+        localStorage.setItem('nota-max', "100");
+        localStorage.setItem('aprobacion', "55");
+        localStorage.setItem('nota-min', "0");
+        document.getElementById('decimales').value = "0";
+        document.querySelectorAll('.aprobacion-input').forEach(i => i.value = "55");
+        // If you have inputs for min/max, update them too:
+        document.querySelectorAll('[data-setting="nota-max"]').forEach(i => i.value = "100");
+        document.querySelectorAll('[data-setting="nota-min"]').forEach(i => i.value = "0");
     } else {
         decimalsSelect.value = "1";
         localStorage.setItem('decimals', "1");
+        localStorage.setItem('nota-max', "7");
+        localStorage.setItem('aprobacion', "4");
+        localStorage.setItem('nota-min', "1");
+        document.getElementById('decimales').value = "1";
+        document.querySelectorAll('.aprobacion-input').forEach(i => i.value = "4");
+        document.querySelectorAll('[data-setting="nota-max"]').forEach(i => i.value = "7");
+        document.querySelectorAll('[data-setting="nota-min"]').forEach(i => i.value = "1");
     }
     updateOutput();
 });

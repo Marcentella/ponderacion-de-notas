@@ -42,7 +42,9 @@
     <!-- Tooltip -->
 
     <div id="tooltip-window" class="">
-        <p>Esta opción te permite deshabilitar el punto decimal automático y asigna la cantidad de decimales a 0<br><br>
+        <p>Esta opción te permite deshabilitar el punto decimal automático y asigna la cantidad de decimales a 0.<br>
+            También cambia los valores máximos, mínimos y de aprobación (puedes configurarlo con la casilla marcada)
+            <br><br>
         Ejemplo: Si escribes <strong>55</strong>, se tomará como <strong>55</strong> y no <strong>5.5</strong>.</p>
         <button id="close-tooltip">Entendido</button>
     </div>
@@ -52,7 +54,7 @@
     <div class="output-container active">
         <h3 id="required-label">Necesitas un</h3>
         <span id="output">--</span>
-        <p>
+        <p id="output-text">
             Al <span id="percentage-remainder">--%</span> restante. <br>
             Tienes un promedio asegurado de: <span id="current_average">--</span>
         </p>
