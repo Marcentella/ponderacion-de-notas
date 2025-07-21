@@ -400,8 +400,8 @@ function updateOutput() {
             // Calculate final average
             const examMarkNum = parseFloat(examMark) || 0;
             const examPercNum = parseFloat(examPerc) || 0;
-            const finalWeightedSum = weightedSum + examMarkNum * (examPercNum / 100);
-            const finalAverage = finalWeightedSum / ((gradesPercent + examPercNum) / 100);
+            const remainingWeight = 1 - examPercNum / 100;
+            const finalAverage = weightedSum * remainingWeight + examMarkNum * (examPercNum / 100);
             const roundedAvg = finalAverage.toFixed(decimals);
             output.textContent = roundedAvg;
             avgElem.textContent = roundedAvg;
